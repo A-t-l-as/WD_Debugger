@@ -88,3 +88,96 @@ Ogromne podziękowania dla **[Arkezara](https://github.com/Arkezar)** za projekt
 ## Licencja
 
 [MIT](LICENSE)
+
+---
+
+# WD Debugger (English)
+
+A tool for analyzing `.wd` archives used by **Reality Pump** games. It looks for items (files) that occur in more than one `.wd` archive - i.e. potential duplicates or overwrites - and also checks whether the game directory contains any loose (unpacked) files that override the contents of the archives.
+
+The program reads only the **central directory** of each `.wd` file (the list of items along with their metadata), without extracting the actual archive contents - this makes the analysis fast even for a large number of files.
+
+## Features
+
+- Detecting items that occur in multiple `.wd` archives (duplicates).
+- Detecting loose files in the game directory that override archive contents.
+- Detecting `.wd` files located outside the `WDFiles` directory.
+- Text report (`.txt`) with optional CSV export.
+- Graphical mode (GUI, Tkinter) with a live log preview.
+- Bilingual interface: Polish and English (`--lang pl` / `--lang en`).
+- Case-insensitive name comparison (default) or case-sensitive (`--case-sensitive`).
+
+## Requirements
+
+- Python 3.10+ (uses `from __future__ import annotations` and modern typing)
+- Standard library only - no external dependencies
+- For GUI mode: `tkinter` (available by default in most Python distributions)
+
+## Installation
+
+No installation is required - just download/clone the repository and run the script with Python.
+
+```bash
+git clone https://github.com/A-t-l-as/WD_Debugger.git
+cd WD_Debugger
+```
+
+## Usage
+
+Run the program from the game directory (the one containing the `WDFiles` subdirectory):
+
+```bash
+python wd_debugger.py
+```
+
+### GUI mode
+
+On Windows you can also use the included launcher scripts:
+
+```
+RUN_WD_DBG_GUI.bat
+```
+
+or
+
+```powershell
+./RUN_WD_DBG_GUI.ps1
+```
+
+Or directly:
+
+```bash
+python wd_debugger.py --gui
+```
+
+### Main CLI options
+
+| Option | Description |
+|---|---|
+| `--wdfiles-dir DIR` | directory containing `.wd` files (default: `WDFiles` next to the program) |
+| `--game-dir DIR` | main game directory, checked for loose files (default: current directory) |
+| `--no-loose-check` | skip checking for loose files in the game directory |
+| `--no-stray-check` | skip searching for `.wd` files located outside `WDFiles` |
+| `--case-sensitive` | compare names with case sensitivity |
+| `--csv FILE` | additionally save the duplicates report to CSV |
+| `--output-txt FILE` | `.txt` file with the full report (default: `wd_debugger_report.txt`, `-` disables saving) |
+| `--gui` | launches the graphical mode |
+| `--lang {pl,en}` | program language (default: `pl`) |
+
+Full configuration example:
+
+```bash
+python wd_debugger.py --game-dir "D:\Games\KnightShift" --csv duplicates.csv --output-txt report.txt --lang en
+```
+
+## .wd file format
+
+The archive format was reconstructed based on the sources of the **[EarthTool](https://github.com/Arkezar/EarthTool)** project by **Arkezar** (MIT license), specifically the `ArchiveFactory.cs` and `Archive.cs` classes.
+
+## Acknowledgements
+
+Huge thanks to **[Arkezar](https://github.com/Arkezar)** for the **[EarthTool](https://github.com/Arkezar/EarthTool)** project - it's thanks to his work on the `.wd` format that this program could exist at all.
+
+## License
+
+[MIT](LICENSE)
